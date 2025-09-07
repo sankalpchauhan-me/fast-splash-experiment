@@ -24,6 +24,7 @@ import me.sankalpchauhan.fastsplash.presentation.base.ui.theme.FastSplashTheme
 import me.sankalpchauhan.fastsplash.presentation.listing.widgets.MovieCard
 import me.sankalpchauhan.fastsplash.presentation.listing.widgets.MovieListContent
 import me.sankalpchauhan.fastsplash.presentation.listing.widgets.MovieSearchHeader
+import me.sankalpchauhan.perftracker.PerfTrace
 
 @AndroidEntryPoint
 class MainActivity : ComponentActivity() {
@@ -32,12 +33,14 @@ class MainActivity : ComponentActivity() {
     override fun onCreate(savedInstanceState: Bundle?) {
         super.onCreate(savedInstanceState)
         val fcpTrace = (applicationContext as FastSplashApplication).fcp
+        val pageRender = (applicationContext as FastSplashApplication).pageRender
+        val fptTrace = (applicationContext as FastSplashApplication).fpt
+        pageRender.stopTrace()
+        Log.d("PERF", "Page Ready = ${pageRender.getDuration()}")
         enableEdgeToEdge()
         setContent {
             val uiState by mainViewModel.uiState.collectAsState()
             var userQuery by remember { mutableStateOf("") }
-            fcpTrace.stopTrace()
-            Log.d("PERF", "Total First Content Paint Time = ${fcpTrace.getDuration()}")
             FastSplashTheme {
                 Scaffold(
                     modifier = Modifier.fillMaxSize(),
@@ -48,7 +51,10 @@ class MainActivity : ComponentActivity() {
                                 userQuery = query
                                 mainViewModel.onUserQuery(query)
                             },
-                            isSearchMode = uiState.isSearchMode
+                            isSearchMode = uiState.isSearchMode,
+                            onFCP = {
+                                logFcp(fcpTrace)
+                            }
                         )
                     }
                 ) { innerPadding ->
@@ -61,10 +67,34 @@ class MainActivity : ComponentActivity() {
                         },
                         onError = {
                             mainViewModel.refresh()
+                        },
+                        onFirstPaint = {
+                            logFcp(fcpTrace)
+                        },
+                        onFullyPainted = {
+                            logFpt(fptTrace)
                         }
                     )
                 }
             }
+        }
+    }
+
+    private fun logFcp(
+        fcpTrace: PerfTrace,
+    ) {
+        if (fcpTrace.isStopped.not()) {
+            fcpTrace.stopTrace()
+            Log.d("PERF", "Total First Content Painted Time = ${fcpTrace.getDuration()}")
+        }
+    }
+
+    private fun logFpt(
+        fptTrace: PerfTrace,
+    ) {
+        if (fptTrace.isStopped.not()) {
+            fptTrace.stopTrace()
+            Log.d("PERF", "Total Fully Painted Time = ${fptTrace.getDuration()}")
         }
     }
 }
