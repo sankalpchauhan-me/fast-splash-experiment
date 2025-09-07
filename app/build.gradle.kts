@@ -82,6 +82,8 @@ dependencies {
     implementation(libs.hilt)
     implementation(project(":PerfTracker"))
     kapt(libs.hilt.compiler)
+    implementation(libs.androidx.core.splashscreen)
+    implementation(libs.lottie.compose)
 
     //Network
     implementation(libs.okhttp.client)
