@@ -1,0 +1,19 @@
+<resources>
+    <string name="app_name">Fast Splash</string>
+    <string name="my_movie_app">My Movie App</string>
+    <string name="something_went_wrong">Something Went Wrong</string>
+    <string name="n_a">N/A</string>
+    <string name="search_results">Search Results</string>
+    <string name="popular_movies">Popular Movies</string>
+    <string name="search_movies">Search movies...</string>
+    <string name="clear">Clear</string>
+    <string name="welcome_to_movie_app">Welcome to Movie App!</string>
+    <string name="popular_movies_are_loading">Popular movies are loading...</string>
+    <string name="no_results_found">No results found</string>
+    <string name="try_searching_for_a_different_movie">Try searching for a different movie</string>
+    <string name="rating">Rating</string>
+    <string name="vote_10">%1$s/10</string>
+    <string name="no_poster_available">No poster available</string>
+    <string name="oops_something_went_wrong">Oops! Something went wrong</string>
+    <string name="retry">Retry</string>
+</resources>

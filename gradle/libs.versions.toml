@@ -1,0 +1,63 @@
+[versions]
+agp = "8.5.0"
+coil = "2.7.0"
+hilt = "2.52"
+kotlin = "1.9.0"
+coreKtx = "1.13.1"
+junit = "4.13.2"
+junitVersion = "1.2.1"
+espressoCore = "3.6.1"
+lifecycleRuntimeKtx = "2.8.6"
+activityCompose = "1.9.2"
+composeBom = "2024.04.01"
+retrofitVersion = "2.11.0"
+jsonSerializerVersion = "1.6.0"
+androidTestCore = "1.4.0"
+coroutinesVersion = "1.8.1"
+googleTruthVersion = "1.4.4"
+mockitoCore = "5.13.0"
+mockitoKotlin = "4.0.0"
+mockkVersion = "1.13.12"
+okHttpBom = "4.12.0"
+turbine = "1.1.0"
+
+[libraries]
+androidx-core-ktx = { group = "androidx.core", name = "core-ktx", version.ref = "coreKtx" }
+junit = { group = "junit", name = "junit", version.ref = "junit" }
+androidx-junit = { group = "androidx.test.ext", name = "junit", version.ref = "junitVersion" }
+androidx-espresso-core = { group = "androidx.test.espresso", name = "espresso-core", version.ref = "espressoCore" }
+androidx-lifecycle-runtime-ktx = { group = "androidx.lifecycle", name = "lifecycle-runtime-ktx", version.ref = "lifecycleRuntimeKtx" }
+androidx-activity-compose = { group = "androidx.activity", name = "activity-compose", version.ref = "activityCompose" }
+androidx-compose-bom = { group = "androidx.compose", name = "compose-bom", version.ref = "composeBom" }
+androidx-ui = { group = "androidx.compose.ui", name = "ui" }
+androidx-ui-graphics = { group = "androidx.compose.ui", name = "ui-graphics" }
+androidx-ui-tooling = { group = "androidx.compose.ui", name = "ui-tooling" }
+androidx-ui-tooling-preview = { group = "androidx.compose.ui", name = "ui-tooling-preview" }
+androidx-ui-test-manifest = { group = "androidx.compose.ui", name = "ui-test-manifest" }
+androidx-ui-test-junit4 = { group = "androidx.compose.ui", name = "ui-test-junit4" }
+androidx-material3 = { group = "androidx.compose.material3", name = "material3" }
+coil = { module = "io.coil-kt:coil", version.ref = "coil" }
+coil-compose = { module = "io.coil-kt:coil-compose", version.ref = "coil" }
+hilt = { module = "com.google.dagger:hilt-android", version.ref = "hilt" }
+hilt-compiler = {module="com.google.dagger:hilt-compiler", version.ref="hilt"}
+retrofit-core = {group="com.squareup.retrofit2", name="retrofit", version.ref="retrofitVersion"}
+retrofit-kotlinx-serializer = {group="com.squareup.retrofit2", name="converter-kotlinx-serialization", version.ref="retrofitVersion"}
+kotlin-serialization-json = {group="org.jetbrains.kotlinx", name="kotlinx-serialization-json", version.ref = "jsonSerializerVersion"}
+android-test-core = {group="androidx.test", name="core", version.ref="androidTestCore"}
+kotlin-coroutines-test = {group="org.jetbrains.kotlinx", name="kotlinx-coroutines-test", version.ref="coroutinesVersion"}
+google-truth-test = {group="com.google.truth", name="truth", version.ref="googleTruthVersion"}
+mockito-core = { group = "org.mockito", name="mockito-core", version.ref = "mockitoCore" }
+mockito-kotlin = { group = "org.mockito.kotlin", name="mockito-kotlin", version.ref = "mockitoKotlin" }
+mockk = {group="io.mockk", name="mockk", version.ref="mockkVersion"}
+okhttp-mock-web-server = {group="com.squareup.okhttp3", name="mockwebserver", version.ref="okHttpBom"}
+okhttp-client = {group="com.squareup.okhttp3", name="okhttp", version.ref="okHttpBom"}
+okhttp-logging-interceptor = {group="com.squareup.okhttp3", name="logging-interceptor", version.ref="okHttpBom"}
+turbine = {group="app.cash.turbine", name="turbine", version.ref="turbine"}
+
+[plugins]
+android-application = { id = "com.android.application", version.ref = "agp" }
+jetbrains-kotlin-android = { id = "org.jetbrains.kotlin.android", version.ref = "kotlin" }
+jetbrains-kotlin-kapt = { id = "org.jetbrains.kotlin.kapt", version.ref = "kotlin" }
+jetbrains-kotlin-serialization = {id = "org.jetbrains.kotlin.plugin.serialization", version.ref="kotlin"}
+jetbrains-kotlin-parcelize = {id = "org.jetbrains.kotlin.plugin.parcelize", version.ref="kotlin"}
+dagger-hilt = {id="com.google.dagger.hilt.android", version.ref="hilt"}
