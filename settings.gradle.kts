@@ -21,3 +21,4 @@ dependencyResolutionManagement {
 
 rootProject.name = "Fast Splash"
 include(":app")
+include(":PerfTracker")

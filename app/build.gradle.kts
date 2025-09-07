@@ -80,6 +80,7 @@ dependencies {
 
     // DI
     implementation(libs.hilt)
+    implementation(project(":PerfTracker"))
     kapt(libs.hilt.compiler)
 
     //Network
