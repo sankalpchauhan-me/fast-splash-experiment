@@ -46,13 +46,15 @@ import me.sankalpchauhan.fastsplash.R
 import me.sankalpchauhan.fastsplash.data.model.Movie
 import me.sankalpchauhan.fastsplash.presentation.listing.ListingState
 import me.sankalpchauhan.fastsplash.utils.TMDB_IMAGE_BASE_URL
+import me.sankalpchauhan.fastsplash.utils.onVisibilityChanged
 
 @Composable
 fun MovieSearchHeader(
     query: String,
     onQueryChange: (String) -> Unit,
     isSearchMode: Boolean,
-    modifier: Modifier = Modifier
+    modifier: Modifier = Modifier,
+    onFCP:()->Unit
 ) {
     Column(
         modifier = modifier
@@ -64,7 +66,8 @@ fun MovieSearchHeader(
         Text(
             text = if (isSearchMode) stringResource(R.string.search_results) else stringResource(R.string.popular_movies),
             style = MaterialTheme.typography.headlineMedium,
-            fontWeight = FontWeight.Bold
+            fontWeight = FontWeight.Bold,
+            modifier = Modifier.onVisibilityChanged(threshold = 1.0f, onVisible = {onFCP.invoke()})
         )
 
         Spacer(modifier = Modifier.height(16.dp))
@@ -102,7 +105,9 @@ fun MovieListContent(
     onLoadMore: () -> Unit,
     onMovieClick: (Movie) -> Unit,
     modifier: Modifier = Modifier,
-    onError: () -> Unit
+    onError: () -> Unit,
+    onFirstPaint: ()->Unit,
+    onFullyPainted: () -> Unit
 ) {
     Box(
         modifier = modifier.fillMaxSize(),
@@ -110,7 +115,11 @@ fun MovieListContent(
     ) {
         when {
             uiState.isLoading && !uiState.hasMovies() -> {
-                CircularProgressIndicator()
+                CircularProgressIndicator(
+                    modifier = Modifier.onVisibilityChanged(threshold = 0.5f, onVisible = {
+                        onFirstPaint.invoke()
+                    })
+                )
             }
 
             uiState.hasError() -> {
@@ -143,7 +152,8 @@ fun MovieListContent(
                     isLoading = uiState.isLoading,
                     canLoadMore = uiState.canLoadMore(),
                     onLoadMore = onLoadMore,
-                    onMovieClick = onMovieClick
+                    onMovieClick = onMovieClick,
+                    onFullyPainted = onFullyPainted
                 )
             }
         }
@@ -158,9 +168,19 @@ fun MovieList(
     canLoadMore: Boolean,
     onLoadMore: () -> Unit,
     onMovieClick: (Movie) -> Unit,
-    modifier: Modifier = Modifier
+    modifier: Modifier = Modifier,
+    onFullyPainted: ()->Unit
 ) {
     val listState = rememberLazyListState()
+
+    LaunchedEffect(listState) {
+        snapshotFlow { listState.layoutInfo.visibleItemsInfo.map { it.index } }
+            .collect { visible ->
+                if(visible.isNotEmpty()){
+                    onFullyPainted.invoke()
+                }
+            }
+    }
 
     LazyColumn(
         modifier = modifier.fillMaxSize(),

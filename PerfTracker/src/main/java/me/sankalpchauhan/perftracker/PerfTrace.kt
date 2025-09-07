@@ -4,7 +4,7 @@ open class PerfTrace(open val name: String) {
     private var startTime: Long = 0L
     private var endTime: Long = 0L
     private var isStarted: Boolean = false
-    private var isStopped: Boolean = false
+    var isStopped: Boolean = false
 
     constructor(name: String, endTimestamp: Long): this(name){
         endTime = endTimestamp
