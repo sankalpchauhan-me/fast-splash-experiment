@@ -13,6 +13,7 @@ class SplashActivity : ComponentActivity() {
         val splash = installSplashScreen()
         enableEdgeToEdge()
         splash.setOnExitAnimationListener{ exit ->
+            // Some routing logic basis some conditions
             this@SplashActivity.startActivity(
                 Intent(
                     this@SplashActivity,
