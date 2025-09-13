@@ -17,8 +17,16 @@ import androidx.compose.runtime.remember
 import androidx.compose.runtime.setValue
 import androidx.compose.ui.Modifier
 import androidx.compose.ui.tooling.preview.Preview
+import androidx.core.content.ContextCompat
+import androidx.core.splashscreen.SplashScreen.Companion.installSplashScreen
+import com.airbnb.lottie.LottieCompositionFactory
 import dagger.hilt.android.AndroidEntryPoint
+import me.sankalpchauhan.eventsplash.EventSplashApi
+import me.sankalpchauhan.eventsplash.model.DefaultConfig
+import me.sankalpchauhan.eventsplash.model.LottieConfig
+import me.sankalpchauhan.eventsplash.model.OutAnimType
 import me.sankalpchauhan.fastsplash.FastSplashApplication
+import me.sankalpchauhan.fastsplash.R
 import me.sankalpchauhan.fastsplash.data.model.Movie
 import me.sankalpchauhan.fastsplash.presentation.base.ui.theme.FastSplashTheme
 import me.sankalpchauhan.fastsplash.presentation.listing.widgets.MovieCard
@@ -32,6 +40,8 @@ class MainActivity : ComponentActivity() {
 
     override fun onCreate(savedInstanceState: Bundle?) {
         super.onCreate(savedInstanceState)
+        installSplashScreen()
+        EventSplashApi.attachTo(this, getSaleConfig())
         val fcpTrace = (applicationContext as FastSplashApplication).fcp
         val pageRender = (applicationContext as FastSplashApplication).pageRender
         val fptTrace = (applicationContext as FastSplashApplication).fpt
@@ -78,6 +88,21 @@ class MainActivity : ComponentActivity() {
                 }
             }
         }
+    }
+
+    private fun getDefaultConfig() = DefaultConfig(
+        appIcon = requireNotNull(ContextCompat.getDrawable(this, R.mipmap.ic_launcher_round))
+    )
+
+    private fun getSaleConfig(): LottieConfig {
+        val result = LottieCompositionFactory.fromRawResSync(this, R.raw.sale_tags)
+        val composition = requireNotNull(result.value) { "Failed to load Lottie .lottie composition from raw resource" }
+        return LottieConfig(
+            outAnimation = OutAnimType.SLIDE_LEFT,
+            outDuration = 200,
+            bgColor = listOf("#FFFF00"),
+            lottieComposition = composition
+        )
     }
 
     private fun logFcp(
