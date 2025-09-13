@@ -41,7 +41,7 @@ class MainActivity : ComponentActivity() {
     override fun onCreate(savedInstanceState: Bundle?) {
         super.onCreate(savedInstanceState)
         installSplashScreen()
-        EventSplashApi.attachTo(this, getSaleConfig())
+        EventSplashApi.attachTo(this).with(getSaleConfig()).show()
         val fcpTrace = (applicationContext as FastSplashApplication).fcp
         val pageRender = (applicationContext as FastSplashApplication).pageRender
         val fptTrace = (applicationContext as FastSplashApplication).fpt
@@ -89,10 +89,6 @@ class MainActivity : ComponentActivity() {
             }
         }
     }
-
-    private fun getDefaultConfig() = DefaultConfig(
-        appIcon = requireNotNull(ContextCompat.getDrawable(this, R.mipmap.ic_launcher_round))
-    )
 
     private fun getSaleConfig(): LottieConfig {
         val result = LottieCompositionFactory.fromRawResSync(this, R.raw.sale_tags)

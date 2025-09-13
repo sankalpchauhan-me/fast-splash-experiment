@@ -19,7 +19,7 @@ data class ImageConfig(
 
 data class DefaultConfig(
     override val outAnimation: OutAnimType = OutAnimType.FADE_OUT,
-    override val outDuration: Long = 200,
+    override val outDuration: Long = 500,
     override val bgColor: List<String> = listOf("#FFFFFF"),
     val appIcon: Drawable
 ): EventSplashConfig(outAnimation, outDuration, bgColor)

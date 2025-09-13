@@ -25,10 +25,6 @@ class DefaultSplashProvider(
     override fun Content(onFinish: () -> Unit) {
         val triggerExit = remember { mutableStateOf(false) }
 
-        LaunchedEffect(Unit) {
-            triggerExit.value = true
-        }
-
         val icon = config.appIcon.toBitmap().asImageBitmap()
 
         Box(
@@ -41,8 +37,11 @@ class DefaultSplashProvider(
                 Image(
                     bitmap = icon,
                     contentDescription = null,
-                    modifier = Modifier.size(128.dp)
+                    modifier = Modifier.size(DEFAULT_SPLASH_ICON_SIZE)
                 )
+                LaunchedEffect(Unit) {
+                    triggerExit.value = true
+                }
             }
 
             AnimatedExitContainer(
@@ -52,6 +51,10 @@ class DefaultSplashProvider(
                 onEnd = { onFinish() }
             ) { inner() }
         }
+    }
+
+    companion object {
+        val DEFAULT_SPLASH_ICON_SIZE = 160.dp
     }
 }
 

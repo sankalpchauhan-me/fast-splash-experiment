@@ -37,8 +37,9 @@ fun AnimatedExitContainer(
         when (animType) {
             OutAnimType.ZOOM_IN -> {
                 coroutineScope {
-                    val zoomEffect = launch { scale.animateTo(1.15f, tween(durationMs.toInt())) }
-                    val fadeOutEffect = launch { alpha.animateTo(0f, tween(durationMs.toInt())) }
+                    val spec = tween<Float>(durationMs.toInt())
+                    val zoomEffect = launch { scale.animateTo(1.8f, spec) }
+                    val fadeOutEffect = launch { alpha.animateTo(0f, spec) }
                     zoomEffect.join(); fadeOutEffect.join()
                 }
             }
