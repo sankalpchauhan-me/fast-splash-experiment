@@ -17,12 +17,10 @@ import androidx.compose.runtime.remember
 import androidx.compose.runtime.setValue
 import androidx.compose.ui.Modifier
 import androidx.compose.ui.tooling.preview.Preview
-import androidx.core.content.ContextCompat
 import androidx.core.splashscreen.SplashScreen.Companion.installSplashScreen
 import com.airbnb.lottie.LottieCompositionFactory
 import dagger.hilt.android.AndroidEntryPoint
 import me.sankalpchauhan.eventsplash.EventSplashApi
-import me.sankalpchauhan.eventsplash.model.DefaultConfig
 import me.sankalpchauhan.eventsplash.model.LottieConfig
 import me.sankalpchauhan.eventsplash.model.OutAnimType
 import me.sankalpchauhan.fastsplash.FastSplashApplication
@@ -41,7 +39,8 @@ class MainActivity : ComponentActivity() {
     override fun onCreate(savedInstanceState: Bundle?) {
         super.onCreate(savedInstanceState)
         installSplashScreen()
-        EventSplashApi.attachTo(this).with(getSaleConfig()).show()
+        // EventSplashApi.attachTo(this).show() // DEFAULT SPLASH
+        EventSplashApi.attachTo(this).with(getSaleConfig()).show() // SALE SPLASH
         val fcpTrace = (applicationContext as FastSplashApplication).fcp
         val pageRender = (applicationContext as FastSplashApplication).pageRender
         val fptTrace = (applicationContext as FastSplashApplication).fpt
