@@ -3,7 +3,7 @@ set -euo pipefail
 
 
 PKG="me.sankalpchauhan.fastsplash"
-ACTIVITY="me.sankalpchauhan.fastsplash/.presentation.listing.MainActivity"
+ACTIVITY="me.sankalpchauhan.fastsplash/.SplashActivity"
 
 
 TAG="PERF"
