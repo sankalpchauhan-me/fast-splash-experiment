@@ -46,7 +46,6 @@ class MainActivity : ComponentActivity() {
         val pageRender = (applicationContext as FastSplashApplication).pageRender
         val fptTrace = (applicationContext as FastSplashApplication).fpt
         pageRender.stopTrace()
-        Log.d("PERF", "\tPage Ready\t${pageRender.getDuration()}")
         enableEdgeToEdge()
         setContent {
             val uiState by mainViewModel.uiState.collectAsState()
@@ -83,6 +82,9 @@ class MainActivity : ComponentActivity() {
                         },
                         onFullyPainted = {
                             logFpt(fptTrace)
+                            Log.d("PERF", "\tPage Ready\t${pageRender.getDuration()}")
+                            Log.d("PERF", "\tFirst Content Painted Time\t${fcpTrace.getDuration()}")
+                            Log.d("PERF", "\tFully Painted Time\t${fptTrace.getDuration()}")
                         }
                     )
                 }
@@ -106,7 +108,6 @@ class MainActivity : ComponentActivity() {
     ) {
         if (fcpTrace.isStopped.not()) {
             fcpTrace.stopTrace()
-            Log.d("PERF", "\tFirst Content Painted Time\t${fcpTrace.getDuration()}")
         }
     }
 
@@ -115,7 +116,6 @@ class MainActivity : ComponentActivity() {
     ) {
         if (fptTrace.isStopped.not()) {
             fptTrace.stopTrace()
-            Log.d("PERF", "\tFully Painted Time\t${fptTrace.getDuration()}")
         }
     }
 }
