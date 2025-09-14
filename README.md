@@ -320,5 +320,5 @@ Contributions are welcome! Please feel free to submit a Pull Request. For major 
 
 ## Connect with me
 If you want to connect or read more about the experiments, check out the links below:
-- Blog: [sankalpchauhan.com](https://www.sankalpchauhan.com)
+- Blog: [sankalpchauhan.com](https://sankalpchauhan.com/)
 - More about me: [sankalpchauhan.me](https://www.sankalpchauhan.me)
