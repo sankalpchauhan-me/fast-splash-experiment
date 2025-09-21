@@ -1,0 +1,27 @@
+# app + a few useful system bits
+buffers { size_kb: 32768 fill_policy: RING_BUFFER }
+duration_ms: 10000
+
+data_sources: {
+  config { name: "linux.ftrace"
+    ftrace_config {
+      # System categories (optional):
+      atrace_categories: "sched"
+      atrace_categories: "wm"
+      atrace_categories: "gfx"
+      atrace_categories: "view"
+      atrace_categories: "am"
+      atrace_categories: "freq"
+
+      # Enable your app’s Trace.beginSection slices:
+      atrace_apps: "me.sankalpchauhan.fastsplash"
+
+      # A couple of kernel sched events (optional but handy):
+      ftrace_events: "sched/sched_switch"
+      ftrace_events: "sched/sched_waking"
+    }
+  }
+}
+
+data_sources: { config { name: "linux.process_stats"
+  process_stats_config { scan_all_processes_on_start: true record_thread_names: true } } }
