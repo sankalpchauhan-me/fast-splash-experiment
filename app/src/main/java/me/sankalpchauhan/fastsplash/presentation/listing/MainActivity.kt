@@ -1,6 +1,7 @@
 package me.sankalpchauhan.fastsplash.presentation.listing
 
 import android.os.Bundle
+import android.os.Trace
 import android.util.Log
 import androidx.activity.ComponentActivity
 import androidx.activity.compose.setContent
@@ -31,54 +32,63 @@ class MainActivity : ComponentActivity() {
     private val mainViewModel: MainViewModel by viewModels()
 
     override fun onCreate(savedInstanceState: Bundle?) {
-        super.onCreate(savedInstanceState)
-        val fcpTrace = (applicationContext as FastSplashApplication).fcp
-        val pageRender = (applicationContext as FastSplashApplication).pageRender
-        val fptTrace = (applicationContext as FastSplashApplication).fpt
-        pageRender.stopTrace()
-        enableEdgeToEdge()
-        setContent {
-            val uiState by mainViewModel.uiState.collectAsState()
-            var userQuery by remember { mutableStateOf("") }
-            FastSplashTheme {
-                Scaffold(
-                    modifier = Modifier.fillMaxSize(),
-                    topBar = {
-                        MovieSearchHeader(
-                            query = userQuery,
-                            onQueryChange = { query ->
-                                userQuery = query
-                                mainViewModel.onUserQuery(query)
+        Trace.beginSection("MainActivity#onCreate")
+        try {
+            super.onCreate(savedInstanceState)
+            val fcpTrace = (applicationContext as FastSplashApplication).fcp
+            val pageRender = (applicationContext as FastSplashApplication).pageRender
+            val fptTrace = (applicationContext as FastSplashApplication).fpt
+            pageRender.stopTrace()
+            enableEdgeToEdge()
+            setContent {
+                val uiState by mainViewModel.uiState.collectAsState()
+                var userQuery by remember { mutableStateOf("") }
+                FastSplashTheme {
+                    Scaffold(
+                        modifier = Modifier.fillMaxSize(),
+                        topBar = {
+                            MovieSearchHeader(
+                                query = userQuery,
+                                onQueryChange = { query ->
+                                    userQuery = query
+                                    mainViewModel.onUserQuery(query)
+                                },
+                                isSearchMode = uiState.isSearchMode,
+                                onFCP = {
+                                    logFcp(fcpTrace)
+                                }
+                            )
+                        }
+                    ) { innerPadding ->
+                        MovieListContent(
+                            modifier = Modifier.padding(innerPadding),
+                            uiState = uiState,
+                            onLoadMore = { mainViewModel.loadNextPage() },
+                            onMovieClick = { movie ->
+                                // TODO: Navigate to movie details
                             },
-                            isSearchMode = uiState.isSearchMode,
-                            onFCP = {
+                            onError = {
+                                mainViewModel.refresh()
+                            },
+                            onFirstPaint = {
                                 logFcp(fcpTrace)
+                            },
+                            onFullyPainted = {
+                                logFpt(fptTrace)
+                                Log.d("PERF", "\tPage Ready\t${pageRender.getDuration()}")
+                                Log.d("PERF", "\tFirst Content Painted Time\t${fcpTrace.getDuration()}")
+                                Log.d("PERF", "\tFully Painted Time\t${fptTrace.getDuration()}")
+                                // Report fully drawn to the system for accurate startup metrics
+                                this@MainActivity.reportFullyDrawn()
+                                // Sentinel for perf_loop.sh to stop per-iteration capture
+                                Log.d("PERF", "TRACE_STOPPED")
                             }
                         )
                     }
-                ) { innerPadding ->
-                    MovieListContent(
-                        modifier = Modifier.padding(innerPadding),
-                        uiState = uiState,
-                        onLoadMore = { mainViewModel.loadNextPage() },
-                        onMovieClick = { movie ->
-                            // TODO: Navigate to movie details
-                        },
-                        onError = {
-                            mainViewModel.refresh()
-                        },
-                        onFirstPaint = {
-                            logFcp(fcpTrace)
-                        },
-                        onFullyPainted = {
-                            logFpt(fptTrace)
-                            Log.d("PERF", "\tPage Ready\t${pageRender.getDuration()}")
-                            Log.d("PERF", "\tFirst Content Painted Time\t${fcpTrace.getDuration()}")
-                            Log.d("PERF", "\tFully Painted Time\t${fptTrace.getDuration()}")
-                        }
-                    )
                 }
             }
+        } finally {
+            Trace.endSection()
         }
     }
 

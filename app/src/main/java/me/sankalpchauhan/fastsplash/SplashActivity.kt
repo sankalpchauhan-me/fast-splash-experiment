@@ -2,6 +2,8 @@ package me.sankalpchauhan.fastsplash
 
 import android.content.Intent
 import android.os.Bundle
+import android.os.Trace
+import android.util.Log
 import androidx.activity.ComponentActivity
 import androidx.activity.compose.setContent
 import androidx.activity.enableEdgeToEdge
@@ -23,17 +25,23 @@ import me.sankalpchauhan.fastsplash.presentation.listing.MainActivity
 class SplashActivity : ComponentActivity() {
     override fun onCreate(savedInstanceState: Bundle?) {
         super.onCreate(savedInstanceState)
-        installSplashScreen()
-        enableEdgeToEdge()
-        setContent {
-            Loader {
-                this@SplashActivity.startActivity(
-                    Intent(
-                        this@SplashActivity,
-                        MainActivity::class.java
+        Trace.beginSection("SplashActivity#onCreate")
+        try {
+            installSplashScreen()
+            enableEdgeToEdge()
+            setContent {
+                Loader {
+                    this@SplashActivity.startActivity(
+                        Intent(
+                            this@SplashActivity,
+                            MainActivity::class.java
+                        )
                     )
-                )
+                    Log.d("PERF", "Splash->Main startActivity")
+                }
             }
+        } finally {
+            Trace.endSection()
         }
     }
 
